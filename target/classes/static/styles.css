@@ -1,0 +1,20 @@
+img{
+    width: 200px;
+    height: 200px;
+}
+.logo{
+    width: 200px;
+    height: 200px;
+}
+.grid{
+    float: left;
+    width: 100%;
+}
+
+.ingredient-group{
+    float: left;
+    padding: 50px;
+}
+.validationError{
+    color: red;
+}
