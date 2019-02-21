@@ -8,9 +8,10 @@ import tacos.Ingredient;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Repository //declare that it should be automatically discovered by
+ //declare that it should be automatically discovered by
             // Spring component scanning and instantiated
             //as a bean in the Spring application context
+ @Repository
 public class JdbcIngredientRepository implements IngredientRepository {
 
     private JdbcTemplate jdbc;
@@ -26,19 +27,20 @@ public class JdbcIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public Ingredient findOne() {
-        return jdbc.queryForObject("SELECT id, name, type FROM Ingredient WHERE id=?",this::mapRowToIngredient);
+    public Ingredient findById(String id) {
+        return jdbc.queryForObject("SELECT id, name, type FROM Ingredient WHERE id=?",this::mapRowToIngredient, id);
     }
 
     @Override
     public Ingredient save(Ingredient ingredient) {
-        jdbc.update("INSERT INTO Ingredient (id, name. type) VALUES (?, ?, ?)",
+        jdbc.update("INSERT INTO Ingredient (id, name, type) VALUES (?, ?, ?)",
                     ingredient.getId(),ingredient.getName(), ingredient.getType().toString());
         return ingredient;
     }
 
     private Ingredient mapRowToIngredient(ResultSet rs, int rowNum) throws SQLException {
-        return new Ingredient(rs.getString("id"),rs.getString("name"),
-                            Ingredient.Type.valueOf(rs.getString("type")));
+        return new Ingredient(rs.getString("id"),
+                    rs.getString("name"),
+                    Ingredient.Type.valueOf(rs.getString("type")));
     }
 }
